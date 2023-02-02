@@ -6,6 +6,8 @@ morgan.token('message', (_req: Request, res: Response) => res.locals.errorMessag
 const successResponseFormat = ':remote-addr - :method :url :status - :response-time ms';
 const errorResponseFormat = ':remote-addr - :method :url :status - :response-time ms - message: :message';
 
+
+// TODO: Save logs in files
 const successHandler = morgan(successResponseFormat, {
     skip: (_req: Request, res: Response) => res.statusCode >= 400
 });
