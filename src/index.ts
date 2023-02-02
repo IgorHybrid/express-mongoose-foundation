@@ -2,9 +2,13 @@ import express from 'express';
 import { json } from 'body-parser';
 import { connectDB } from './config/db';
 import routes from './routes';
+import morgan from './utils/logger/morgan';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+app.use(morgan.successHandler);
+app.use(morgan.errorHandler);
 
 app.use(json());
 
