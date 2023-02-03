@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import { json } from 'body-parser';
 import { connectDB } from './config/db';
