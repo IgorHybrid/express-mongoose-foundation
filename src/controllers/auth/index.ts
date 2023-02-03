@@ -21,12 +21,12 @@ export const login =async (req:Request, res:Response, next:NextFunction) => {
     try {
         const user:IUser | null = await User.findOne({$or: [{email},{username}]}).select('+password');
         if (!user) {
-            return res.status(401).send({msg: 'Invalid username.'});
+            return next({name: 'ValidationError', message: 'Invalid username.'});
         }
 
         const isMatch:boolean = await user.matchPassword(password);
         if (!isMatch) {
-            return res.status(401).send({msg: 'Invalid password.'});
+            return next({name: 'ValidationError', message: 'Invalid password.'});
         }
 
         return res.status(200).send({_id: user._id});
