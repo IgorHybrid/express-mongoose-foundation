@@ -1,7 +1,7 @@
-import { Response, Request } from "express";
+import { Response, Request, NextFunction } from "express";
 import User, { IUser } from "../../models/User";
 
-export const register = async (req:Request, res:Response, next:any) => {
+export const register = async (req:Request, res:Response, next:NextFunction) => {
     const { username, email, password } = req.body;
     try {
         const user:IUser = await User.create({
@@ -11,12 +11,12 @@ export const register = async (req:Request, res:Response, next:any) => {
         });
         return res.status(201).send({msg: "User created" })
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 };
 
 // TODO: Add session storage with tokens
-export const login =async (req:Request, res:Response, next:any) => {
+export const login =async (req:Request, res:Response, next:NextFunction) => {
     const { username, email, password } = req.body;
     try {
         const user:IUser | null = await User.findOne({$or: [{email},{username}]}).select('+password');
@@ -31,6 +31,6 @@ export const login =async (req:Request, res:Response, next:any) => {
 
         return res.status(200).send({_id: user._id});
     } catch (error) {
-        console.error(error);
+        next(error);
     }
 }
