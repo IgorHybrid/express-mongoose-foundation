@@ -42,4 +42,4 @@ UserSchema.methods.matchPassword = async function(password:string) {
     return await bycrypt.compare(password, this.password);
 };
 
-export default model<IUser>("User", UserSchema);
+export const User = model<IUser>("User", UserSchema);
