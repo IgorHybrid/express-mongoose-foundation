@@ -2,7 +2,7 @@
   "name": "katharus-back",
   "version": "0.1.0",
   "description": "Express server for Katharus, developed in Typescript and connected to MongoDB",
-  "main": "dist/index.js",
+  "main": "dist/server.js",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc",
