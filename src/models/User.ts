@@ -3,10 +3,13 @@ import { model, Schema, Document } from "mongoose";
 
 export interface IUser extends Document {
     matchPassword(password:string): boolean | PromiseLike<boolean>,
+    toJSON(): INewUser,
     username: string,
     password: string,
     email: string
 };
+
+export type INewUser = Omit<IUser, 'password'>
 
 const UserSchema: Schema = new Schema({
     username: {
@@ -41,5 +44,12 @@ UserSchema.pre<IUser>("save", async function (next: any) {
 UserSchema.methods.matchPassword = async function(password:string) {
     return await bycrypt.compare(password, this.password);
 };
+
+UserSchema.methods.toJSON = function() {
+    const user = this.toObject();
+    delete user.password;
+
+    return user;
+}
 
 export const User = model<IUser>("User", UserSchema);

@@ -1,18 +1,19 @@
 import { Response, Request, NextFunction } from "express";
 import { Token } from "../../models/Token";
-import { IUser, User } from "../../models/User";
+import { INewUser, IUser, User } from "../../models/User";
 import { generateAuthToken, verifyToken } from "../../utils/token";
 
 export const register = async (req:Request, res:Response, next:NextFunction) => {
     const { username, email, password } = req.body;
     try {
-        const user:IUser = await User.create({
+        const userDoc:IUser = await User.create({
             username,
             email,
             password
         });
-        const tokens = await generateAuthToken(user.id);
-        return res.status(201).send({user, tokens });
+        const tokens = await generateAuthToken(userDoc.id);
+        const user:INewUser = userDoc.toJSON();
+        return res.status(201).send({ user, tokens });
     } catch (error) {
         next(error);
     }
