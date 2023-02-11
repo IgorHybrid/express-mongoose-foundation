@@ -16,19 +16,6 @@ const defaultUser = {
     password
 }
 
-beforeAll(async () => {
-    mongoose.set('strictQuery', false);
-    await mongoose.connect("mongodb://127.0.0.1:27017/katharus-back-test");
-});
-
-beforeEach(async () => {
-    await Promise.all(Object.values(mongoose.connection.collections).map(async (collection) => collection.deleteMany({})));
-});
-
-afterAll(async () => {
-    await mongoose.disconnect();
-});
-
 describe("Auth routes", () => {
     describe('POST /auth/register', () => {
         let newUser: object;
