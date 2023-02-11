@@ -1,7 +1,7 @@
 {
-  "name": "katharus-back",
+  "name": "express-mongoose-foundation",
   "version": "0.1.0",
-  "description": "Express server for Katharus, developed in Typescript and connected to MongoDB",
+  "description": "Express server foundation connected to MongoDB. It has user session handler with tokens, everythin you need to start an express server.",
   "main": "dist/server.js",
   "scripts": {
     "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
