@@ -6,6 +6,14 @@ import { generateAuthToken, verifyToken } from "../../utils/token";
 export const register = async (req:Request, res:Response, next:NextFunction) => {
     const { username, email, password } = req.body;
     try {
+        if (await User.isEmailValid(email)) {
+            return next({name: 'ValidationError', message: 'Email already taken'});
+        }
+
+        if (await User.isUsernameValid(username)) {
+            return next({name: 'ValidationError', message: 'Username already taken'});
+        }
+
         const userDoc:IUser = await User.create({
             username,
             email,
