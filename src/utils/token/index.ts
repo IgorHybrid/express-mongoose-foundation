@@ -64,19 +64,23 @@ export const verifyToken = async (
     token: string,
     type: string
 ): Promise<IToken> => {
-    const payload = jwt.verify(token, process.env.JWT_SECRET || 'json-secret');
-    if (typeof payload.sub !== 'string') {
-        throw new ApiError (401, 'Incorrect user');
-    }
-    const tokenDoc = await Token.findOne({
-       token,
-       type,
-       user: payload.sub,
-       blacklisted: false
-    });
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET || 'json-secret');
+        if (typeof payload.sub !== 'string') {
+            throw new Error('Incorrect user');
+        }
+        const tokenDoc = await Token.findOne({
+           token,
+           type,
+           user: payload.sub,
+           blacklisted: false
+        });
 
-    if (!tokenDoc) {
-        throw new ApiError(401, 'Token not found');
+        if (!tokenDoc) {
+            throw new Error('Token not found');
+        }
+        return tokenDoc;
+    } catch (error:any) {
+        throw new ApiError(401, error.message);
     }
-    return tokenDoc;
 }
