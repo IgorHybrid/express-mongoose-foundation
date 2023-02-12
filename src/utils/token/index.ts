@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import moment, { Moment } from 'moment';
 import mongoose from 'mongoose';
 import { IToken, AccessAndRefreshToken ,Token } from '../../models/Token';
+import ApiError from '../error';
 
 export const generateToken = (
     userID: mongoose.Types.ObjectId,
@@ -65,7 +66,7 @@ export const verifyToken = async (
 ): Promise<IToken> => {
     const payload = jwt.verify(token, process.env.JWT_SECRET || 'json-secret');
     if (typeof payload.sub !== 'string') {
-        throw new Error ('Bad error');
+        throw new ApiError (401, 'Incorrect user');
     }
     const tokenDoc = await Token.findOne({
        token,
@@ -75,7 +76,7 @@ export const verifyToken = async (
     });
 
     if (!tokenDoc) {
-        throw new Error('Token not found');
+        throw new ApiError(401, 'Token not found');
     }
     return tokenDoc;
 }

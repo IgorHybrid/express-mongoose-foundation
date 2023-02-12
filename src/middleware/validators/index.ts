@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import { Request, Response, NextFunction } from 'express';
+import ApiError from '../../utils/error';
 
 export const validate =
     (schema: Record<string,any>) =>
@@ -10,7 +11,7 @@ export const validate =
 
         if (error) {
             const errorMessage = error.details.map((details) => details.message).join(', ');
-            return next({name: 'ValidationError', message: errorMessage});
+            return next(new ApiError(400, errorMessage));
         }
 
         Object.assign(req, value);
