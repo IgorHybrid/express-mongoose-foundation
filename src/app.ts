@@ -4,7 +4,7 @@ import passport from 'passport';
 import { json } from 'body-parser';
 import routes from './routes';
 import morgan from './utils/logger/morgan';
-import { error404Handler, errorHandler, authMiddleware } from './middleware';
+import { errorMiddleware, authMiddleware } from './middleware';
 
 const app = express();
 
@@ -20,7 +20,8 @@ passport.use('jwt', authMiddleware.jwtStrategy);
 app.use('/', routes);
 
 // Error middleware
-app.use(error404Handler);
-app.use(errorHandler);
+app.use(errorMiddleware.error404Handler);
+app.use(errorMiddleware.errorConverter);
+app.use(errorMiddleware.errorHandler);
 
 export default app;
