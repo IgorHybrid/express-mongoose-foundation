@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express"
+import { Request, Response, NextFunction } from "express";
+import ApiError from "../../utils/error";
 
 export const error404 = (req:Request, res:Response, next:NextFunction) => {
-    res.locals.errorMessage = 'Page not found';
-    res.status(404).send({message: 'Page not found'});
+    next(new ApiError(404, 'Page not found'));
 }
