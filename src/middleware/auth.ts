@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
 import { User, IUser } from '../models/User';
+import ApiError from '../utils/error';
 
 export const jwtStrategy = new JwtStrategy(
     {
@@ -11,7 +12,7 @@ export const jwtStrategy = new JwtStrategy(
     async (payload, done) => {
         try {
             if (payload.type !== 'access') {
-                throw new Error('Invalid token type');
+                throw new ApiError(400, 'Invalid token type');
             }
 
             const user = await User.findById(payload.sub);
@@ -29,9 +30,12 @@ export const jwtStrategy = new JwtStrategy(
 const verifyCallback =
   (req: Request, resolve: any, reject: any) =>
   async (err: Error, user: IUser, info: string) => {
-    if (err || info || !user) {
-        console.error(user);
-        return reject({ name: "Unauthorized", message: "Authentication required" });
+    if (err) {
+        return reject(err);
+    }
+
+    if (info || !user) {
+        return reject(new ApiError(401, 'Authentication required'));
     }
 
     req.user = user;
