@@ -1,5 +1,5 @@
 import bycrypt from "bcryptjs";
-import { model, Schema, Document } from "mongoose";
+import { model, Schema, Document, Model } from "mongoose";
 
 export interface IUser extends Document {
     matchPassword(password:string): boolean | PromiseLike<boolean>,
@@ -7,6 +7,11 @@ export interface IUser extends Document {
     username: string,
     password: string,
     email: string
+};
+
+export interface IUserModel extends Model<IUser> {
+    isEmailValid(email:string): boolean | PromiseLike<boolean>,
+    isUsernameValid(username:string): boolean | PromiseLike<boolean>
 };
 
 export type INewUser = Omit<IUser, 'password'>
@@ -41,6 +46,18 @@ UserSchema.pre<IUser>("save", async function (next: any) {
     next();
 });
 
+UserSchema.statics.isEmailValid = async function(email:string) {
+    const userDoc = await this.findOne({email});
+
+    return !!userDoc;
+};
+
+UserSchema.statics.isUsernameValid = async function(username:string) {
+    const userDoc = await this.findOne({username});
+
+    return !!userDoc;
+};
+
 UserSchema.methods.matchPassword = async function(password:string) {
     return await bycrypt.compare(password, this.password);
 };
@@ -52,4 +69,4 @@ UserSchema.methods.toJSON = function() {
     return user;
 }
 
-export const User = model<IUser>("User", UserSchema);
+export const User = model<IUser, IUserModel>("User", UserSchema);
