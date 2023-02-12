@@ -2,16 +2,17 @@ import { Response, Request, NextFunction } from "express";
 import { Token } from "../../models/Token";
 import { INewUser, IUser, User } from "../../models/User";
 import { generateAuthToken, verifyToken } from "../../utils/token";
+import ApiError from "../../utils/error";
 
 export const register = async (req:Request, res:Response, next:NextFunction) => {
     const { username, email, password } = req.body;
     try {
         if (await User.isEmailValid(email)) {
-            return next({name: 'ValidationError', message: 'Email already taken'});
+            throw new ApiError(400, 'Email already taken');
         }
 
         if (await User.isUsernameValid(username)) {
-            return next({name: 'ValidationError', message: 'Username already taken'});
+            throw new ApiError(400, 'Username already taken');
         }
 
         const userDoc:IUser = await User.create({
@@ -32,12 +33,12 @@ export const login = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const user:IUser | null = await User.findOne({$or: [{email},{username}]}).select('+password');
         if (!user) {
-            return next({name: 'ValidationError', message: 'Invalid username.'});
+            throw new ApiError(401, 'Incorrect username/email');
         }
 
         const isMatch:boolean = await user.matchPassword(password);
         if (!isMatch) {
-            return next({name: 'ValidationError', message: 'Invalid password.'});
+            throw new ApiError(401, 'Incorrect password');
         }
 
         const tokens = await generateAuthToken(user.id)
@@ -51,7 +52,7 @@ export const logout = async (req:Request, res:Response, next:NextFunction) => {
     try {
         const refreshTokenDoc = await Token.findOne({token: req.body.refreshToken, type: 'refresh', blacklisted: false});
         if (!refreshTokenDoc) {
-            throw new Error('Not Found');
+            throw new ApiError(401, 'Invalid credentials');
         }
 
         await refreshTokenDoc.remove();
@@ -66,7 +67,7 @@ export const refreshToken = async (req:Request, res:Response, next:NextFunction)
         const refreshTokenDoc = await verifyToken(req.body.refreshToken, 'refresh');
         const user = await User.findById(refreshTokenDoc.user);
         if (!user) {
-            throw new Error('User not found');
+            throw new ApiError(401, 'User not found');
         }
 
         await refreshTokenDoc.remove();
