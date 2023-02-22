@@ -9,7 +9,8 @@
     "prestart": "npm run build",
     "dev": "nodemon --watch src -e ts --exec npm run start",
     "start": "node .",
-    "test": "jest --coverage"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "author": "@IgorHybrid",
   "license": "ISC",
