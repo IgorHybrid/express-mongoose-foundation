@@ -1,11 +1,9 @@
 import request from 'supertest';
-import app from '../../app';
+import app from '../../src/app';
 import mongoose from 'mongoose';
 import { faker } from '@faker-js/faker';
-import { User } from '../../models/User';
-import { Token } from '../../models/Token';
-import { generateAuthToken, generateToken, saveToken } from '../../utils/token';
-import moment from 'moment';
+import { User } from '../../src/models/User';
+import { generateAuthToken } from '../../src/utils/token';
 
 const defaultUser = {
     _id: new mongoose.Types.ObjectId(),

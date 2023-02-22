@@ -61,16 +61,16 @@ export default {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  globalSetup: './src/__test__/globalSetup.ts',
+  globalSetup: '<rootDir>/__test__/globalSetup.ts',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  globalTeardown: './src/__test__/globalTeardown.ts',
+  globalTeardown: '<rootDir>/__test__/globalTeardown.ts',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
 
   // The maximum amount of workers used to run your tests. Can be specified as % or a number. E.g. maxWorkers: 10% will use 10% of your CPU amount + 1 as the maximum worker number. maxWorkers: 2 will use a maximum of 2 workers.
-  // maxWorkers: "50%",
+  //maxWorkers: "1",
 
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [
@@ -138,7 +138,7 @@ export default {
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    "./src/__test__/setUpFile.ts"
+    "<rootDir>/__test__/setupFile.ts"
   ],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
