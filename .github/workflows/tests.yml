@@ -26,9 +26,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - name: Install dependencies
     - run: npm ci
-    - name: Run tests
     - run: npm test --ci
     - name: Check tests coverage
       uses: devmasx/coverage-check-action@v1.2.0
