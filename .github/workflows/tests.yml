@@ -9,6 +9,13 @@ on:
   pull_request:
     branches: [ "master" ]
 
+env:
+  PORT: 3000
+  MONGODB_URL: mongodb://127.0.0.1:27017/express-mongo
+  JWT_SECRET: thisisasamplesecret
+  JWT_ACCESS_EXPIRATION_MINUTES: 30
+  JWT_REFRESH_EXPIRATION_DAYS: 30
+
 jobs:
   build:
 
