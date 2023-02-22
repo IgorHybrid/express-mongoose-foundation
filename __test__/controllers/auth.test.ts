@@ -2,10 +2,10 @@
 import { faker } from '@faker-js/faker';
 import request from 'supertest';
 import mongoose from 'mongoose';
-import app from '../../app';
-import { User } from '../../models/User';
-import { Token } from '../../models/Token';
-import { generateAuthToken, generateToken, saveToken } from '../../utils/token';
+import app from '../../src/app';
+import { User } from '../../src/models/User';
+import { Token } from '../../src/models/Token';
+import { generateAuthToken, generateToken, saveToken } from '../../src/utils/token';
 import moment from 'moment';
 
 const defaultUser = {
