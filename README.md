@@ -55,4 +55,5 @@ There are some features I am still working on:
 - [ ] Authentication by roles
 - [ ] Logger
 - [ ] Keep error stacks only for development
+- [ ] Remove or replace deprecated packages
 
