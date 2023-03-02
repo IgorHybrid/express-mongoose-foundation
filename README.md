@@ -23,7 +23,7 @@ Create .env file as below:
 PORT=3000
 
 # URL of the Mongo DB
-MONGODB_URL=mongodb://127.0.0.1:27017/db-name
+MONGO_URI=mongodb://127.0.0.1:27017/db-name
 
 # JWT
 # JWT secret key
